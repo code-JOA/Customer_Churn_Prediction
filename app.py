@@ -1,15 +1,27 @@
-# Importing keras libraries
-from keras.models import Sequential
-from keras.layers import Dense
+# importing libraries
+from flask import Flask , jsonify , request
+import pandas as pd
+import numpy as np
+from sklearn.externals import joblib
+import json
 
-# Initialize the ANN
-classifier = Sequential()
+# ML
+from sklearn.preprocessing import StandardScaler,LabelEncoder,OnehotEncoder
+from sklearn.compose import ColumnTransformer
 
-# Adding the input layer and the first hidden layer
-classifier.add(Dense(units=6 , kernel_initializer = 'uniform' , activation='relu' , input_dim=11))
+app = Flask(__name__)
 
-# Add the second hidden layer
-classifier.add(Dense(units=6, kernel_initializer='uniform' , activation='relu'))
 
-# Add the output layer
-classifier.add(Dense(units=1 , kernel_initializer='uniform' , activation='sigmoid'))
+@app.route("/")
+def index():
+    return flask.render_template("index.html")
+
+
+@app.route("/predict", methods=["POST"])
+def predict():
+
+
+
+
+if __name__ =="__main__":
+    app.run(host="0.0.0.0" , port=5000)    
