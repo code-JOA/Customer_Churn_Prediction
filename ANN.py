@@ -67,6 +67,14 @@ print(x_test)
 print(X_train.shape[1])
 
 
+def classification_report_gen():
+    y_pred = classifier.predict(x_test)
+    print("\nPredicted values: " + str(y_pred) + "\n")
+    y_pred = (y_pred > 0.5)
+    from sklearn.metrics import plot_confusion_matrix
+    cm = confusion_matrix(y_test, y_pred)
+    accuracy = accuracy_score(y_test, y_pred)
+    print("\nTest Accuracy: "+ str(accuracy) + "\n")
 
 
 # Initialize the ANN
@@ -85,4 +93,4 @@ def biuld_ANN_model():
 
 classifier = biuld_ANN_model()
 classifier.fit(X_train , y_train , batch_size = 10  ,epochs = 100)
-generate_report()
+classification_report_gen()
