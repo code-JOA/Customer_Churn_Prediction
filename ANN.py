@@ -78,7 +78,7 @@ def classification_report_gen():
 
 
 # Initialize the ANN
-def biuld_ANN_model():
+def build_ANN_model():
     classifier = Sequential()
     # Adding the input layer and the first hidden layer
     classifier.add(Dense(units=6 , kernel_initializer = 'uniform' , activation='relu' , input_dim=11))
@@ -94,3 +94,9 @@ def biuld_ANN_model():
 classifier = biuld_ANN_model()
 classifier.fit(X_train , y_train , batch_size = 10  ,epochs = 100)
 classification_report_gen()
+
+
+# HyperParameter Optimization
+def build_ANN_model():
+    classifier = Sequential()
+    classifier.add(Dense(units = 6 , kernel_initializer='uniform', activation = 'relu' , input_dim = ))
