@@ -3,6 +3,8 @@ from keras.models import Sequential
 from keras.layers import Dense
 from sklearn.preprocessing import LabelEncoder, OneHotEncoder
 from sklearn.compose import ColumnTransformer
+from keras.wrappers.scikit_learn import KerasClassifier
+from
 
 # Importing the dataset
 dataset = pd.read_csv('Churn_Modelling.csv')
@@ -39,7 +41,7 @@ X = X[:, 1:]
 
 def clean_df(df):
     L_encoder = LabelEncoder()
-    df['Gender'] = L_encoder.fit_transform(df['Gender'])
+    df["Gender"] = L_encoder.fit_transform(df["Gender"])
     df = df.get_dummies(data=df , columns=["Geography"] , drop_first=True)
     df = df.sort_index(axis=1)
     return df
@@ -81,13 +83,13 @@ def classification_report_gen():
 def build_ANN_model():
     classifier = Sequential()
     # Adding the input layer and the first hidden layer
-    classifier.add(Dense(units=6 , kernel_initializer = 'uniform' , activation='relu' , input_dim=11))
+    classifier.add(Dense(units=6 , kernel_initializer = "uniform" , activation="relu" , input_dim=11))
     # Add the second hidden layer
-    classifier.add(Dense(units=6, kernel_initializer='uniform' , activation='relu'))
+    classifier.add(Dense(units=6, kernel_initializer="uniform" , activation="relu"))
     # Add the output layer . I used sigmoid since the output variable is binary.
-    classifier.add(Dense(units=1 , kernel_initializer='uniform' , activation='sigmoid'))
+    classifier.add(Dense(units=1 , kernel_initializer="uniform" , activation="sigmoid"))
     # Compiling the ANN
-    classifier.compile(optimizer='adam' , loss='binary_crossentropy' , metrics = ['accuracy'])
+    classifier.compile(optimizer="adam" , loss="binary_crossentropy" , metrics = ["accuracy"])
     return classifier
 
 
@@ -99,4 +101,23 @@ classification_report_gen()
 # HyperParameter Optimization
 def build_ANN_model():
     classifier = Sequential()
-    classifier.add(Dense(units = 6 , kernel_initializer='uniform', activation = 'relu' , input_dim = ))
+    classifier.add(Dense(units = 6 , kernel_initializer="uniform", activation = "relu" , input_dim = X_train.shape[1]))
+    classifier.add(Dense(units= 6 , kernel_initializer="uniform" , activation = "relu"))
+    classifier.add(Dense(units= 1 , kernel_initializer="uniform" , activation = "sigmoid"))
+    classifier.add(Dense(optimizer = optimizer , loss = "binary_crossentropy" , metrics = ["accuracy"]))
+    return classifier
+classifier = KerasClassifier(build_fn = build_model)
+parameters = {"batch_size" : [5,15,30] , "epochs":[30,100] , "optimizer":["adam","rmsprop"]}
+grid_search = GridSearchCV(esrtimator=classifier,
+                           param_grid = parameters,
+                           scoring = "accuracy",
+                           cv=10)
+grid_search = grid_search.fit(X_train , y_train)
+best_parameters = grid_search.best_params_
+best_accuracy = grid_search.best_score_
+print(best_parameters , best_accuracy)
+classification_report_gen()
+
+
+# save the model
+joblib.dum(classifier , "prediction_classifier.pkl")   

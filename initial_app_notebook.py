@@ -1,8 +1,4 @@
-import tensorflow
-import keras
-
-
-
+import tensorflow as tf
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -15,38 +11,26 @@ y = df.iloc[:, 13].values
 
 
 # Encoding categorical data
-# from sklearn.preprocessing import LabelEncoder, OneHotEncoder
-# label_encoder_X_1 = LabelEncoder()
-# X[:, 1] = LabelEncoder_X_1.fit_transform(X[:, 1])
-# labelencoder_X_2 = LabelEncoder()
-# X[:, 2] = labelencoder_X_2.fit_transform(X[:, 2])
-# onehotencdoer = ColumnTransformer([("one_hot_encoder",OneHotEncoder(), [1] , remainder = "passthrough")])
-# X = onehotencoder.fit_transform(X)
-# X = X[:, 1:]
-
-
 from sklearn.preprocessing import LabelEncoder, OneHotEncoder
+le = LabelEncoder()
+# Label encoding the "Gender" column
+X[:, 2] = le.fit_transform(X[:, 2])
+
+
+# Enconding the the "Geography" Variable
 from sklearn.compose import ColumnTransformer
-labelencoder_X_2 = LabelEncoder()
-
-X[:, 2] = labelencoder_X_2.fit_transform(X[:, 2])
-
-#onehotencoder = OneHotEncoder(categorical_features = [1])
-
-#X = onehotencoder.fit_transform(X).toarray()
-
 columnTransformer = ColumnTransformer([('encoder', OneHotEncoder(), [1])], remainder='passthrough')
-
 X = np.array(columnTransformer.fit_transform(X), dtype = np.str)
-
-X = X[:, 1:]
+# X = X[:, 1:]
 
 
 # Splitting the dataset into the Training set and Test set
 from sklearn.model_selection import train_test_split
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 0)
 
-# Feature Scaling
+
+
+# Feature Scaling is very important in Aritificial Nueral Network
 from sklearn.preprocessing import StandardScaler
 sc = StandardScaler()
 X_train = sc.fit_transform(X_train)
