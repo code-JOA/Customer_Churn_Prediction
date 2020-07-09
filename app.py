@@ -19,7 +19,31 @@ def index():
 
 @app.route("/predict", methods=["POST"])
 def predict():
-    
+    form_data = request.form.to_dict()
+
+    df_input = pd.DataFrame.from_records([form_data], )
+    df_input = df_input.drop(['submitBtn'], axis=1)
+    df_input = pd.DataFrame(df_input)
+
+    sample_df = pd.DataFrame(columns = main_cols)
+    clean_df = clean_data(df_input)
+    main_df = sample_df.append(clean_df)
+    main_df = main_df.fillna(0)
+    print(main_df)
+
+
+    std_df = standardize_data(main_df)
+    print(std_df)
+
+    clf = joblib.load('prediction_classifier.pkl')
+    pred = clf.predict(std_df)
+    print(pred, pred[0], pred[0][0])
+    x = round(pred[0][0]*100, 2)
+
+    print(x)
+
+    return flask.render_template('index.html', predicted_value="Customer Churn rate: {}%".format(str(x)))
+    # return jsonify({'prediction': str(x)})
 
 
 
