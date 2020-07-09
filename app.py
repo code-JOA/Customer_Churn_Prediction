@@ -6,10 +6,28 @@ from sklearn.externals import joblib
 import json
 
 # ML
-from sklearn.preprocessing import StandardScaler,LabelEncoder,OnehotEncoder
+from sklearn.preprocessing import StandardScaler , LabelEncoder, OneHotEncoder
 from sklearn.compose import ColumnTransformer
 
+import flask
+
 app = Flask(__name__)
+
+main_cols = joblib.load("columns.pkl")
+
+
+def clean_data(df_x):
+    le = LabelEncoder()
+    df_x.Gender = le.fit_transform(df_x.Gender)
+    df_x = pd.get_dummies(data = df_x ,
+           columns = ["Geography"] , drop_first = False)
+    return df_x
+
+
+def standardize_data(dta):
+    scaler = joblib.load("std_scaler.pkl")
+    X_transformed = scaler.transform(dta)
+    return X_transformed
 
 
 @app.route("/")
@@ -49,4 +67,4 @@ def predict():
 
 
 if __name__ =="__main__":
-    app.run(host="0.0.0.0" , port=5000)
+    app.run(host="0.0.0.0" , port=8080)
