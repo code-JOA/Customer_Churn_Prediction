@@ -2,7 +2,8 @@
 from flask import Flask , jsonify , request
 import pandas as pd
 import numpy as np
-from sklearn.externals import joblib
+# from sklearn.externals import joblib
+import joblib 
 import json
 
 # ML
@@ -64,7 +65,10 @@ def predict():
     # return jsonify({'prediction': str(x)})
 
 
+# deploy on local
+if __name__ == "__main__":
+    app.run(host="0.0.0.0")
 
-
-if __name__ =="__main__":
-    app.run(host="0.0.0.0" , port=8080)
+# # deploy to cloud
+# if __name__ =="__main__":
+#     app.run(host="0.0.0.0" , port=8080)
