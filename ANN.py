@@ -1,10 +1,13 @@
 # Importing keras libraries
 from keras.models import Sequential
-from keras.layers import Dense
+from keras.layers import Dense , Dropout
 from sklearn.preprocessing import LabelEncoder, OneHotEncoder
 from sklearn.compose import ColumnTransformer
 from keras.wrappers.scikit_learn import KerasClassifier
-from
+import keras
+from sklearn.model_selection import cross_val_score , GridSearchCV
+
+
 
 # Importing the dataset
 dataset = pd.read_csv('Churn_Modelling.csv')
@@ -120,4 +123,4 @@ classification_report_gen()
 
 
 # save the model
-joblib.dum(classifier , "prediction_classifier.pkl")   
+joblib.dump(classifier , "prediction_classifier.pkl")
