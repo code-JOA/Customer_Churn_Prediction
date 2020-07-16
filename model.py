@@ -118,7 +118,7 @@ grid_search = grid_search.fit(X_train , y_train)
 best_parameters = grid_search.best_params_
 best_accuracy = grid_search.best_score_
 print(best_parameters , best_accuracy)
-generate_rep()
+generate_report()
 
 
 # save the model
